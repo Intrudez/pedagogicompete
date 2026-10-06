@@ -1,116 +1,196 @@
-# Board Quiz: team quiz game for the smart board
+# Kullanım Kılavuzu
 
-Türkçe kullanım kılavuzu: [KULLANIM_KILAVUZU.md](KULLANIM_KILAVUZU.md)
+**Board Quiz: Akıllı tahta için takım temelli soru-cevap yarışması**
+Hazırlayan: @bks0026 · Lisans: CC BY-NC-SA 4.0
 
-## What is in this folder
+> **English:** Technical guide (setup, question files, sounds, media): [README_EN.md](README_EN.md)
 
-```
-sinif-yarismasi/
-  index.html                  the game (open this)
-  lib/xlsx.full.min.js        reads Excel files (keep it next to index.html)
-  fonts/                      the game's fonts, so it looks the same offline (keep it next to index.html)
-  assets/
-    sounds/                   put your own sound files here (optional)
-    celebration.mp4           optional "perfect team" video (you add it)
-  sets/
-    sets.json                 list of question folders (only needed online)
-    grade7-theme1-set1/       Theme 1, set 1 (30 questions, 7 with pictures)
-      questions.xlsx          the question list
-      grandpa.jpg, lily.jpg … the pictures used in picture questions
-      tall_short.png          a picture used as a clue
-    grade7-theme1-set2/       Theme 1, set 2 (30 questions, 7 with pictures)
-```
+## 1. Amaç
 
-## Smart board (Pardus ETAP)
+Board Quiz, ünite sonu pekiştirme etkinliğidir. Oyun 25-30 öğrencilik sınıflar için tasarlanmıştır. Bütün sınıf takımlar hâlinde oyuna katılır. Öğrenciler sırayla tahtaya gelir. Her öğrenci soruyu ve seçenekleri sesli okur, sonra cevabı seçer.
 
-The game is made for the 1920×1080 working area that ETAP boards give the browser (Full HD boards at 100%, 4K boards at 200%). Every question fits on one screen without scrolling, with or without the browser toolbar, for 1 to 10 teams. Press F11 in Firefox for full screen.
+Oyunun hedefleri şunlardır:
 
-## How to open the game
+- Ünitenin hedef kelime ve yapılarını geri çağırma yoluyla pekiştirmek.
+- Bütün öğrencileri derse etkin olarak katmak.
+- Konuşmayı ve doğru telaffuzu teşvik etmek.
+- Takım çalışmasını, iş birliğini ve dostça rekabeti geliştirmek.
+- Öğrencilerin derse duyuşsal hazırbulunuşluğunu (ilgi, istek ve güven) artırmak.
+- Öğretmene biçimlendirici değerlendirme verisi sağlamak.
 
-**From a USB stick, no internet:** double-click `index.html`. Press **Open a question folder…**, choose a folder like `sets/grade7-theme1-set1` (or the whole `sets` folder to see every list).
+## 2. Pedagojik gerekçe
 
-**From GitHub Pages, with internet:** open the game's web address. Every list in `sets/sets.json` appears automatically.
+### 2.1 Takım temelli yapı
 
-## How a game runs
+Oyun, iş birlikli öğrenmenin iki temel koşulunu karşılar (Slavin, 1995):
 
-1. Choose the question list. The game shows how many questions loaded and lists any rows it had to skip and why.
-2. Choose the number of teams (1 to 10). The game uses the largest number of questions that divides equally between the teams.
-3. Choose jokers per team (0 to 5), how many extra seconds a joker gives, and whether the 50:50 joker is on.
-4. Choose seconds per question, turn order (Team 1, 2, 3 … again, or finish one team then the next), shuffle, and whether clues are on.
-5. Type the team names. Enter jumps to the next name.
+- **Grup hedefi:** Takım puanı, takımdaki her öğrencinin cevabına bağlıdır.
+- **Bireysel sorumluluk:** Her öğrenci tahtaya tek başına gelir. Hiçbir öğrenci güçlü bir takım arkadaşının arkasına saklanamaz.
 
-Each turn: the student comes to the board and presses **NEXT**. Only then the question appears and the timer starts.
+Bu yapı olumlu dayanışma (positive interdependence) oluşturur (Johnson ve Johnson, 2009). Öğrenciler takım arkadaşının başarısını kendi başarısı olarak görür. Bu durum takım ruhunu ve sınıf içi iş birliğini güçlendirir.
 
-| Event | Points |
+### 2.2 Rekabet ve motivasyon
+
+Oyun, rekabeti iş birliği ile birleştirir: takımlar birbiriyle yarışır, takım üyeleri birbirini destekler. Oyunlaştırma araştırmaları, bu birleşimin motivasyon ve katılım için tek başına rekabetten daha etkili olduğunu gösterir (Sailer ve Homner, 2020).
+
+Oyun, Öz Belirleme Kuramı'nın üç temel ihtiyacını destekler (Deci ve Ryan, 2000):
+
+- **Yeterlik:** Her öğrenci puan kazanabilir.
+- **İlişkisellik:** Öğrenci takımının bir parçasıdır.
+- **Özerklik:** Öğrenci ipucu ve joker kullanımına kendisi karar verir.
+
+### 2.3 Hazırbulunuşluk ve motivasyon
+
+Hazırbulunuşluğun yalnızca bilişsel bir boyutu yoktur. Bloom (1976), öğrenmeyi etkileyen iki giriş özelliği tanımlar: bilişsel giriş davranışları ve duyuşsal giriş özellikleri. Duyuşsal giriş özellikleri, öğrencinin derse karşı ilgisini, istekliliğini ve kendine güvenini kapsar. Bu özellikler düşük olduğunda öğrenci, bilişsel olarak hazır olsa bile öğrenmeye katılmaz.
+
+Oyun, öğrencinin duyuşsal hazırbulunuşluğunu artırır. Bu etki, Keller'in (1987) ARCS motivasyon modeli ile açıklanabilir:
+
+- **Dikkat (Attention):** Yarışma ortamı, sesler, süre ve resimli sorular öğrencinin dikkatini çeker.
+- **İlgi (Relevance):** Sorular, öğrencinin kendisini ve arkadaşlarını tanımlamak için kullandığı dili içerir.
+- **Güven (Confidence):** İpucu, jokerler ve sesli okuma puanı, her öğrenciye başarı şansı verir.
+- **Doyum (Satisfaction):** Puanlar ve takım başarısı, öğrencinin çabasını görünür kılar.
+
+Bu yolla oyun, öğrenciyi bir sonraki öğrenme etkinliğine istekli ve güvenli bir şekilde hazırlar.
+
+### 2.4 Kalıcı öğrenme ve dönüt
+
+Bilgiyi hatırlamaya çalışmak, bilgiyi tekrar okumaktan daha kalıcı öğrenme sağlar (Roediger ve Karpicke, 2006). Bu nedenle oyun, cevabı vermeden önce öğrenciyi hatırlamaya yönlendirir.
+
+Öğrenci yanlış seçeneği seçerse oyun yanlış seçeneği kırmızı, doğru seçeneği yeşil gösterir. Anında dönüt, çoktan seçmeli sorularda yanlış seçeneğin öğrenilme riskini azaltır (Butler ve Roediger, 2008).
+
+Oyun sonunda "Missed questions" ekranı, yanlış cevaplanan soruları listeler. Öğretmen bu listeyi biçimlendirici değerlendirme verisi olarak kullanır ve sonraki dersi bu veriye göre planlar.
+
+### 2.5 Kapsayıcılık: ipucu ve jokerler
+
+Oyun, farklı dil düzeylerindeki öğrencileri destekler. Bu öğrenciler arasında BEP (Bireyselleştirilmiş Eğitim Programı) kapsamındaki öğrenciler ve İngilizce bilgisi çok sınırlı olan öğrenciler de vardır. Destek araçları, öğrencinin yakınsak gelişim alanında (Vygotsky, 1978) öğrenmesini sağlayan bir iskele (scaffolding) görevi görür (Wood, Bruner ve Ross, 1976):
+
+- **İpucu:** Kısa bir metin veya resim gösterir. Doğru cevap 50 puan kazandırır.
+- **Joker (takım danışması):** Takım arkadaşları öğrenciye sesli yardım eder. Süreye ek saniye eklenir. Bu, akran desteğidir.
+- **50:50 jokeri:** Takım 50 puan öder. İki yanlış seçenek kaybolur. Bu, bilişsel yükü azaltır.
+- **Sesli okuma puanı:** Soruyu ve seçenekleri sesli okuyan her öğrenci 50 puan kazanır. Bu nedenle hiçbir öğrenci tahtadan boş dönmez.
+
+Bu yapı, Öğrenme için Evrensel Tasarım (UDL) ilkesindeki "katılım için çoklu yollar" anlayışı ile uyumludur (CAST, 2018).
+
+### 2.6 Konuşma ve telaffuz
+
+Öğrenci, soruyu ve bütün seçenekleri sesli okur. Bu adım, öğrencinin hedef dili sınıf önünde kullanmasını sağlar. Sınıfın geri kalanı da bütün seçenekleri dinler.
+
+Öğretmen oyun sırasında öğrenciyi düzeltmez. Öğretmen, sık yanlış telaffuz edilen kelimeleri not eder. Oyundan sonra öğretmen bu kelimeleri beyaz tahtaya yazar. Sonra öğretmen kelimeleri doğru biçimde tekrar eder (recast) veya sınıfla koro tekrarı (choral drill) yapar. Recast, sınıfta en sık kullanılan düzeltici dönüt türüdür (Lyster ve Ranta, 1997). Toplu düzeltme, düzeltmenin tek bir öğrenciye odaklanmasını önler.
+
+### 2.7 Kaygının azaltılması
+
+Sınıf önünde konuşmak, yabancı dil kaygısının temel kaynaklarından biridir (Horwitz, Horwitz ve Cope, 1986). Yüksek kaygı, dil edinimini engeller (Krashen, 1982: duyuşsal süzgeç hipotezi). Oyun bu kaygıyı şu yollarla azaltır:
+
+- Öğrenci, takımının desteğini bilir.
+- Yanlış cevap puan kaybettirmez.
+- Yanlış cevap sesi yumuşaktır.
+- Doğru cevap hemen gösterilir ve oyun devam eder.
+
+## 3. Gerekli olanlar
+
+- Akıllı tahta (Pardus ETAP) veya bilgisayar ile projeksiyon.
+- Firefox veya Chrome tarayıcısı.
+- İnternet bağlantısı (çevrim içi kullanım için) veya oyun klasörünü içeren USB bellek (çevrim dışı kullanım için).
+- Hoparlör (önerilir).
+
+## 4. Oyunu açma
+
+**Çevrim içi:**
+
+1. Tarayıcıda şu adresi açın: https://bks0026.github.io/pedagogicompete/
+2. Tam ekran için F11 tuşuna basın.
+
+**USB bellekten:**
+
+1. Oyun klasörünü USB belleğe kopyalayın.
+2. `index.html` dosyasını açın.
+3. "Open a question folder…" düğmesine basın.
+4. `sets` klasörünü seçin.
+
+## 5. Oyunu kurma
+
+1. **Soru listesini seçin.** Ekran, yüklenen soru sayısını gösterir.
+2. **Takım sayısını seçin (1-10).** 30 öğrenci için 5 veya 6 takım önerilir. Oyun, her takıma eşit sayıda soru verir.
+3. **Joker sayısını seçin (0-5).** Jokerin eklediği saniyeyi seçin. 50:50 jokerini açın veya kapatın.
+4. **Soru süresini seçin.** Varsayılan süre 30 saniyedir.
+5. **Sıra düzenini seçin:**
+   - "Team 1, 2, 3 … then again": Takımlar sırayla oynar. Bu düzen önerilir.
+   - "Finish one team, then the next": Bir takım bütün sorularını bitirir, sonra diğer takım başlar.
+6. **İpucunu açın veya kapatın.**
+7. **Takım adlarını yazın.** Bir sonraki ada geçmek için Enter tuşuna basın.
+
+## 6. Oyun akışı
+
+1. Ekran, sıradaki takımın adını gösterir.
+2. Öğrenci tahtaya gelir.
+3. Öğrenci "NEXT" düğmesine basar. Soru açılır. Süre başlar.
+4. Öğrenci soruyu ve seçenekleri sesli okur.
+5. Öğretmen "Read aloud +50" düğmesine basar.
+6. Öğrenci gerekirse ipucu veya joker kullanır.
+7. Öğrenci bir seçeneğe dokunur.
+8. Ekran doğru cevabı gösterir. Öğrenci yerine döner.
+
+### Puanlama
+
+| Durum | Puan |
 |---|---|
-| Teacher presses **Read aloud +50** (press again to undo) | +50 |
-| Correct answer | +100 |
-| Correct answer after buying the **CLUE** | +50 |
-| Wrong answer or time is up | 0 (the wrong option turns red, the correct one green) |
-| **Joker** | team may help out loud, timer gets extra seconds |
-| **50:50** | the team pays 50 points, 2 wrong options disappear (once per question, needs at least 50 points) |
+| Soruyu ve seçenekleri sesli okuma (öğretmen verir) | +50 |
+| Doğru cevap | +100 |
+| İpucu ile doğru cevap | +50 |
+| Yanlış cevap veya süre bitti | 0 |
+| 50:50 jokeri | -50 |
 
-**Pause ■** turns the screen fully black and stops the timer. On the pause screen you can give or take 50 points from any team, turn clues or sounds on and off, or end the game early. The key **P** also pauses and resumes.
+Bir takım bütün sorularını doğru cevaplarsa ekranda kutlama gösterilir.
 
-If a team answers all of its questions correctly, the celebration plays in the middle of the screen and fades away.
+## 7. Öğretmen kontrolleri
 
-At the end: the final scores, then **Missed questions** shows every wrongly answered or timed-out question so you can solve them with the class (**Show answer** turns the correct option green).
+Öğretmen kontrolleri ekranın sağ üst köşesindedir.
 
-## Adding and removing questions
+- **Read aloud +50:** Sesli okuma puanını verir. Yanlışlıkla bastıysanız düğmeye tekrar basın. Puan geri alınır.
+- **Pause:** Ekranı karartır ve süreyi durdurur. Bu düğmeyi şu durumlarda kullanın:
+  - Ders kesintiye uğradığında.
+  - Bir takım, tahtadaki arkadaşına cevabı söylediğinde. Duraklatma ekranında takımdan 50 puan düşün.
+- Duraklatma ekranında şunları yapabilirsiniz:
+  - Takımlara puan ekleyin veya puan düşün (±50).
+  - İpucunu açın veya kapatın.
+  - Sesi açın veya kapatın.
+  - Oyunu bitirin.
 
-Open `questions.xlsx` in Excel, LibreOffice or Google Sheets (download as .xlsx). One row is one question.
+## 8. Oyundan sonra
 
-| Column | What to write |
-|---|---|
-| question | The question text. May be empty if `question_media` asks the question. |
-| question_media | File name of a picture, GIF or video in the **same folder**, e.g. `girl1.jpg`, `dance.gif`, `clip.mp4`. |
-| A, B, C, D, E, F | The options. Use 2 to 6, leave the rest empty. |
-| answer | The letter of the correct option. |
-| clue | Text shown when the student buys the clue. |
-| clue_media | Picture, GIF or video file name in the same folder, shown as the clue. |
+1. Son puan tablosunu sınıfla birlikte inceleyin.
+2. "Missed questions" düğmesine basın.
+3. Yanlış cevaplanan soruları sınıfla birlikte çözün.
+4. Sık yanlış telaffuz edilen kelimeleri beyaz tahtaya yazın. Recast veya koro tekrarı yapın.
 
-- Delete a row to remove a question. Add a row to add one.
-- No clue and no clue_media: the CLUE button is hidden for that question.
-- Keep the column names in row 1. Only the first sheet is read.
-- CSV also works (comma or semicolon). Excel files are safer for Turkish characters.
+## 9. Soruları değiştirme
 
-## Making a new question list
+Her soru listesi, `sets` klasöründe ayrı bir klasördür. Klasörde `questions.xlsx` dosyası ve resimler bulunur.
 
-1. Copy the `grade7-theme1-set1` folder and rename it, e.g. `grade8-theme1`.
-2. Edit `questions.xlsx` and put the pictures and videos for this list in the same folder.
-3. Online only: add a line to `sets/sets.json`:
+1. `questions.xlsx` dosyasını Excel veya LibreOffice ile açın.
+2. Bir satır, bir sorudur. Soru eklemek için satır ekleyin. Soru silmek için satırı silin.
+3. Resim kullanmak için resim dosyasını aynı klasöre koyun. Dosya adını `question_media` veya `clue_media` sütununa yazın.
+4. Dosyayı kaydedin.
 
-```json
-[
-  { "name": "Grade 7 · Theme 1 · Set 1", "folder": "grade7-theme1-set1" },
-  { "name": "Grade 8 · Theme 1 · Friendship", "folder": "grade8-theme1" }
-]
-```
+Ayrıntılı teknik bilgi için [README_EN.md](README_EN.md) dosyasını okuyun (İngilizce).
 
-On a USB stick you can skip step 3 and use **Open a question folder…**.
+## 10. Lisans
 
-## Sounds and the celebration video
+Board Quiz, CC BY-NC-SA 4.0 lisansı ile paylaşılır. Oyunu ticari olmayan eğitim amacıyla kullanabilir, kopyalayabilir ve uyarlayabilirsiniz. Kaynak olarak @bks0026 adını belirtin. Uyarladığınız sürümü aynı lisans ile paylaşın.
 
-The game has built-in sounds. To use your own, put MP3 files with these exact names in `assets/sounds/`:
+## Kaynakça
 
-| File | When it plays |
-|---|---|
-| `question.mp3` | a question appears |
-| `tick.mp3` | every second of the timer |
-| `thinking.mp3` | optional background music that loops while the timer runs (ticks then play only in the last 5 seconds) |
-| `correct.mp3` | correct answer |
-| `wrong.mp3` | wrong answer |
-| `timeup.mp3` | time is up |
-| `joker.mp3` | joker used |
-| `clue.mp3` | clue bought |
-| `celebration.mp3` | perfect team and final scores |
-
-Any file you don't add uses the built-in sound.
-
-For the perfect-team celebration, put `celebration.mp4` (or `.webm` or `.gif`) in `assets/`. A list folder can have its own `celebration.mp4`, which wins over the one in `assets/`. Without a file, the game shows "PERFECT!" with confetti.
-
-If a picture shows "File not found", check that the file name in Excel matches the file exactly, including .jpg or .png.
-
-## License
-
-Board Quiz by @bks0026 is licensed under CC BY-NC-SA 4.0: you may use, copy, adapt and share it for non-commercial teaching. Credit @bks0026 and share adapted versions under the same license. See `LICENSE` and `THIRD_PARTY_NOTICES.md`.
+- Bloom, B. S. (1976). *Human characteristics and school learning*. McGraw-Hill.
+- Butler, A. C., ve Roediger, H. L. (2008). Feedback enhances the positive effects and reduces the negative effects of multiple-choice testing. *Memory & Cognition, 36*(3), 604-616.
+- CAST. (2018). *Universal Design for Learning guidelines version 2.2*. http://udlguidelines.cast.org
+- Deci, E. L., ve Ryan, R. M. (2000). The "what" and "why" of goal pursuits: Human needs and the self-determination of behavior. *Psychological Inquiry, 11*(4), 227-268.
+- Horwitz, E. K., Horwitz, M. B., ve Cope, J. (1986). Foreign language classroom anxiety. *The Modern Language Journal, 70*(2), 125-132.
+- Johnson, D. W., ve Johnson, R. T. (2009). An educational psychology success story: Social interdependence theory and cooperative learning. *Educational Researcher, 38*(5), 365-379.
+- Keller, J. M. (1987). Development and use of the ARCS model of instructional design. *Journal of Instructional Development, 10*(3), 2-10.
+- Krashen, S. D. (1982). *Principles and practice in second language acquisition*. Pergamon.
+- Lyster, R., ve Ranta, L. (1997). Corrective feedback and learner uptake. *Studies in Second Language Acquisition, 19*(1), 37-66.
+- Roediger, H. L., ve Karpicke, J. D. (2006). Test-enhanced learning: Taking memory tests improves long-term retention. *Psychological Science, 17*(3), 249-255.
+- Sailer, M., ve Homner, L. (2020). The gamification of learning: A meta-analysis. *Educational Psychology Review, 32*(1), 77-112.
+- Slavin, R. E. (1995). *Cooperative learning: Theory, research, and practice* (2nd ed.). Allyn and Bacon.
+- Vygotsky, L. S. (1978). *Mind in society: The development of higher psychological processes*. Harvard University Press.
+- Wood, D., Bruner, J. S., ve Ross, G. (1976). The role of tutoring in problem solving. *Journal of Child Psychology and Psychiatry, 17*(2), 89-100.
