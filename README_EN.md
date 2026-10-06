@@ -13,12 +13,12 @@ sinif-yarismasi/
     sounds/                   put your own sound files here (optional)
     celebration.mp4           optional "perfect team" video (you add it)
   sets/
-    sets.json                 list of question folders (only needed online)
-    grade7-theme1-set1/       Theme 1, set 1 (30 questions, 7 with pictures)
-      questions.xlsx          the question list
-      grandpa.jpg, lily.jpg … the pictures used in picture questions
-      tall_short.png          a picture used as a clue
-    grade7-theme1-set2/       Theme 1, set 2 (30 questions, 7 with pictures)
+    sets.json                 list of question folders, with grade, theme and set (only needed online)
+    grade7-theme1-set1/       Grade 7, Theme 1, Set A (30 questions, 7 with pictures)
+    grade7-theme1-set2/       Grade 7, Theme 1, Set B (30 questions, 7 with pictures)
+    grade9-theme1-set1/       Grade 9, Theme 1, Set A (30 questions)
+    grade9-theme1-set2/       Grade 9, Theme 1, Set B (30 questions)
+    grade9-theme1-set3/       Grade 9, Theme 1, Set C (30 flag questions)
 ```
 
 ## Smart board (Pardus ETAP)
@@ -33,7 +33,7 @@ The game is made for the 1920×1080 working area that ETAP boards give the brows
 
 ## How a game runs
 
-1. Choose the question list. The game shows how many questions loaded and lists any rows it had to skip and why.
+1. Choose the grade (2 to 11), then the set under its theme. The game shows how many questions loaded and lists any rows it had to skip and why.
 2. Choose the number of teams (1 to 10). The game uses the largest number of questions that divides equally between the teams.
 3. Choose jokers per team (0 to 5), how many extra seconds a joker gives, and whether the 50:50 joker is on.
 4. Choose seconds per question, turn order (Team 1, 2, 3 … again, or finish one team then the next), shuffle, and whether clues are on.
@@ -76,16 +76,18 @@ Open `questions.xlsx` in Excel, LibreOffice or Google Sheets (download as .xlsx)
 
 ## Making a new question list
 
-1. Copy the `grade7-theme1-set1` folder and rename it, e.g. `grade8-theme1`.
+1. Copy a set folder and rename it with the grade, theme and set number, e.g. `grade8-theme1-set1`.
 2. Edit `questions.xlsx` and put the pictures and videos for this list in the same folder.
 3. Online only: add a line to `sets/sets.json`:
 
 ```json
 [
-  { "name": "Grade 7 · Theme 1 · Set 1", "folder": "grade7-theme1-set1" },
-  { "name": "Grade 8 · Theme 1 · Friendship", "folder": "grade8-theme1" }
+  { "name": "Grade 9 · Theme 1 · Set A", "folder": "grade9-theme1-set1", "grade": 9, "theme": 1, "set": "A" },
+  { "name": "Grade 9 · Theme 2 · Set A", "folder": "grade9-theme2-set1", "grade": 9, "theme": 2, "set": "A", "note": "Pictures" }
 ]
 ```
+
+`grade`, `theme` and `set` decide where the list appears on the start page. `note` is an optional short label shown on the set button. If they are missing, the game reads them from a folder name like `grade9-theme2-set1` (set 1 = Set A, set 2 = Set B). Lists without a grade appear under **Other**.
 
 On a USB stick you can skip step 3 and use **Open a question folder…**.
 

@@ -109,7 +109,7 @@ Sınıf önünde konuşmak, yabancı dil kaygısının temel kaynaklarından bir
 
 ## 5. Oyunu kurma
 
-1. **Soru listesini seçin.** Ekran, yüklenen soru sayısını gösterir.
+1. **Sınıfı ve soru setini seçin.** Önce sınıf düzeyine (2-11), sonra tema altındaki sete (Set A, Set B…) dokunun. Ekran, yüklenen soru sayısını gösterir.
 2. **Takım sayısını seçin (1-10).** 30 öğrenci için 5 veya 6 takım önerilir. Oyun, her takıma eşit sayıda soru verir.
 3. **Joker sayısını seçin (0-5).** Jokerin eklediği saniyeyi seçin. 50:50 jokerini açın veya kapatın.
 4. **Soru süresini seçin.** Varsayılan süre 30 saniyedir.

@@ -1,10 +1,38 @@
 [
   {
-    "name": "Grade 7 · Theme 1 · Set 1",
-    "folder": "grade7-theme1-set1"
+    "name": "Grade 7 · Theme 1 · Set A",
+    "folder": "grade7-theme1-set1",
+    "grade": 7,
+    "theme": 1,
+    "set": "A"
   },
   {
-    "name": "Grade 7 · Theme 1 · Set 2",
-    "folder": "grade7-theme1-set2"
+    "name": "Grade 7 · Theme 1 · Set B",
+    "folder": "grade7-theme1-set2",
+    "grade": 7,
+    "theme": 1,
+    "set": "B"
+  },
+  {
+    "name": "Grade 9 · Theme 1 · Set A",
+    "folder": "grade9-theme1-set1",
+    "grade": 9,
+    "theme": 1,
+    "set": "A"
+  },
+  {
+    "name": "Grade 9 · Theme 1 · Set B",
+    "folder": "grade9-theme1-set2",
+    "grade": 9,
+    "theme": 1,
+    "set": "B"
+  },
+  {
+    "name": "Grade 9 · Theme 1 · Set C (Flags)",
+    "folder": "grade9-theme1-set3",
+    "grade": 9,
+    "theme": 1,
+    "set": "C",
+    "note": "Flags"
   }
 ]

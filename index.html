@@ -55,6 +55,16 @@ h1,h2{font-family:var(--display);font-weight:800;margin:0;letter-spacing:.01em;t
 .panel h2{font-size:clamp(1.6rem,2.8vw,2.6rem)}
 .panel p{margin:0;color:var(--muted);max-width:70ch;line-height:1.45}
 .lists{display:grid;gap:10px}
+.grades{display:grid;grid-template-columns:repeat(auto-fill,minmax(84px,1fr));gap:10px}
+.grades button{border:2px solid var(--edge2);background:var(--stage);border-radius:14px;min-height:72px;font-family:var(--display);font-weight:800;font-size:clamp(1.6rem,2.4vw,2.2rem);display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1}
+.grades button small{font-family:var(--body);font-weight:700;font-size:.7rem;letter-spacing:.08em;color:var(--muted);margin-top:4px}
+.grades button[aria-pressed="true"]{background:var(--gold);color:#1a1440;border-color:var(--gold)}
+.grades button[aria-pressed="true"] small{color:#1a1440}
+.grades button:disabled{opacity:.35}
+.theme-group{display:flex;flex-direction:column;gap:8px}
+.theme-group h3{margin:6px 0 0;font-family:var(--display);font-weight:800;font-size:1.4rem;color:var(--gold);letter-spacing:.02em}
+.theme-sets{display:flex;flex-wrap:wrap;gap:10px}
+.theme-sets button{flex:0 1 auto;min-width:150px}
 .lists button{text-align:left;border:2px solid var(--edge2);background:var(--stage);border-radius:14px;padding:14px 18px;font-weight:700;display:flex;justify-content:space-between;gap:12px;align-items:center}
 .lists button small{color:var(--muted);font-weight:400}
 .lists button[aria-pressed="true"]{border-color:var(--gold)}
@@ -98,7 +108,7 @@ h1,h2{font-family:var(--display);font-weight:800;margin:0;letter-spacing:.01em;t
 .plate{flex:1;min-width:0;position:relative;background:linear-gradient(180deg,#1a2170,var(--plate));border:3px solid var(--edge);border-radius:22px;padding:clamp(14px,2vh,26px) clamp(16px,2.4vw,36px);display:flex;flex-direction:column;gap:14px;justify-content:center;box-shadow:0 0 30px color-mix(in srgb,var(--edge) 35%,transparent)}
 .qtext{font-weight:700;font-size:calc(clamp(1.5rem,3vw,3rem) * var(--k,1));line-height:1.2;text-wrap:balance;white-space:pre-wrap}
 .media{display:flex;justify-content:center}
-.media img,.media video{max-width:100%;max-height:calc(34vh * var(--k,1));border-radius:12px;background:#fff}
+.media img,.media video{object-fit:contain;max-width:100%;max-height:calc(34vh * var(--k,1));border-radius:12px;background:#fff}
 .media .miss{color:#ffd2d3;border:1px dashed var(--wrong);border-radius:10px;padding:10px 14px;font-size:.9em}
 .timer{flex:none;width:clamp(96px,10vw,160px);aspect-ratio:1;border-radius:50%;background:conic-gradient(var(--tc,var(--gold)) calc(var(--p,1)*360deg),#252b6e 0);display:grid;place-items:center;align-self:center}
 .timer span{width:80%;aspect-ratio:1;border-radius:50%;background:var(--stage);display:grid;place-items:center;font-family:var(--display);font-weight:800;font-size:clamp(2rem,3.6vw,3.6rem);font-variant-numeric:tabular-nums}
@@ -196,6 +206,8 @@ h1,h2{font-family:var(--display);font-weight:800;margin:0;letter-spacing:.01em;t
 
     <div class="panel" id="step1">
       <h2>Which question list?</h2>
+      <span class="field-label">Grade</span>
+      <div class="grades" id="grades"></div>
       <div class="lists" id="lists"></div>
       <div class="row">
         <button class="btn" id="pickFolder">Open a question folder…</button>
@@ -331,7 +343,7 @@ const LETTERS=['A','B','C','D','E','F'];
 const IMG=/\.(png|jpe?g|gif|webp|svg|bmp)$/i, VID=/\.(mp4|webm|ogv|ogg|mov|m4v)$/i, SHEET=/\.(xlsx|xls|ods|csv)$/i;
 
 /* ---------------- state ---------------- */
-const G={set:null,lists:[],n:5,jokers:2,jokerSec:15,fifty:true,clues:true,sec:30,order:'rotate',shuffle:true,names:[],
+const G={set:null,grade:null,lists:[],n:5,jokers:2,jokerSec:15,fifty:true,clues:true,sec:30,order:'rotate',shuffle:true,names:[],
   scores:[],jokersLeft:[],correct:[],done:[],plan:[],i:0,per:0,missed:[],paused:false,inGame:false};
 let cur=null;
 
@@ -409,14 +421,39 @@ function renderMedia(box,name){box.innerHTML='';if(!name)return;const url=mediaU
   const miss=()=>{box.innerHTML=`<div class="miss">File not found: ${esc(name)}. Put it in the same folder as the question list.</div>`};
   if(!url){miss();return}
   if(mediaKind(name,url)==='video'){const v=document.createElement('video');v.src=url;v.controls=true;v.autoplay=true;v.playsInline=true;v.onerror=miss;box.append(v);v.play().catch(()=>{})}
-  else{const im=new Image();im.alt='';im.src=url;im.onerror=miss;box.append(im)}}
+  else{const im=new Image();im.alt='';if(/\.svg$/i.test(name)||/^data:image\/svg/i.test(url))im.style.width='min(30vw,100%)';im.src=url;im.onerror=miss;box.append(im)}}
 
 /* ---------------- question lists ---------------- */
-function renderLists(){const box=$('#lists');box.innerHTML='';if(!G.lists.length){box.innerHTML='<p>No question lists found yet. Press <b>Open a question folder…</b> and choose the <b>sets</b> folder (or one list folder inside it).</p>';return}
-  G.lists.forEach((l,i)=>{const b=document.createElement('button');b.setAttribute('aria-pressed',G.set&&G.set._id===l.id?'true':'false');
-    b.innerHTML=`<span>${esc(l.name)}</span><small>${esc(l.where)}</small>`;b.onclick=()=>chooseList(l);box.append(b)})}
+/* grade, theme and set come from sets.json, or from a folder name like grade9-theme1-set2 */
+function meta(text,e){e=e||{};const t=String(text||'');
+  const g=e.grade!=null?+e.grade:(+((t.match(/grade[\s_-]*(\d+)/i)||[])[1])||null);
+  const th=e.theme!=null?+e.theme:(+((t.match(/theme[\s_-]*(\d+)/i)||[])[1])||null);
+  let st=e.set!=null?String(e.set):((t.match(/set[\s_-]*([a-z0-9]+)/i)||[])[1]||'');
+  if(/^\d+$/.test(st))st=String.fromCharCode(64+(+st));
+  return{grade:g,theme:th,setLabel:st?('Set '+st.toUpperCase()):'',note:e.note||''}}
+const GRADES=[2,3,4,5,6,7,8,9,10,11];
+function renderGrades(){const box=$('#grades');box.innerHTML='';
+  const count=g=>G.lists.filter(l=>g==='other'?!GRADES.includes(l.grade):l.grade===g).length;
+  const keys=[...GRADES];if(count('other'))keys.push('other');
+  keys.forEach(g=>{const n=count(g);const b=document.createElement('button');b.disabled=!n;
+    b.setAttribute('aria-pressed',G.grade===g?'true':'false');
+    b.innerHTML=g==='other'?`Other<small>${n} list${n===1?'':'s'}</small>`:`${g}<small>${n?n+' set'+(n===1?'':'s'):'none'}</small>`;
+    b.onclick=()=>{G.grade=g;renderLists()};box.append(b)})}
+function renderLists(){renderGrades();const box=$('#lists');box.innerHTML='';
+  if(!G.lists.length){box.innerHTML='<p>No question lists found yet. Press <b>Open a question folder…</b> and choose the <b>sets</b> folder (or one list folder inside it).</p>';return}
+  if(G.grade==null){box.innerHTML='<p>Choose a grade.</p>';return}
+  const mine=G.lists.filter(l=>G.grade==='other'?!GRADES.includes(l.grade):l.grade===G.grade);
+  const groups={};mine.forEach(l=>{const k=l.theme!=null?'Theme '+l.theme:'Other lists';(groups[k]=groups[k]||[]).push(l)});
+  Object.keys(groups).sort((a,b)=>a.localeCompare(b,undefined,{numeric:true})).forEach(k=>{
+    const sec=document.createElement('div');sec.className='theme-group';sec.innerHTML=`<h3>${esc(k)}</h3>`;
+    const row=document.createElement('div');row.className='theme-sets lists';
+    groups[k].sort((a,b)=>(a.setLabel||a.name).localeCompare(b.setLabel||b.name,undefined,{numeric:true})).forEach(l=>{
+      const b=document.createElement('button');b.setAttribute('aria-pressed',G.set&&G.set._id===l.id?'true':'false');
+      const title=l.setLabel||l.name;const sub=l.note||l.where;b.innerHTML=`<span>${esc(title)}</span>`+(sub?`<small>${esc(sub)}</small>`:'');
+      b.onclick=()=>chooseList(l);row.append(b)});
+    sec.append(row);box.append(sec)})}
 async function chooseList(l){status('Loading…');try{const s=await l.load();s._id=l.id;s.name=s.name||l.name;applySet(s)}catch(e){status(e.message||String(e),true)}}
-function addList(l){if(!G.lists.some(x=>x.id===l.id))G.lists.push(l);renderLists()}
+function addList(l){if(!G.lists.some(x=>x.id===l.id))G.lists.push(l);if(G.grade==null&&G.lists.length===1)G.grade=GRADES.includes(l.grade)?l.grade:'other';renderLists()}
 function status(html,err){const s=$('#loadStatus');s.hidden=false;s.className='status'+(err?' err':'');s.innerHTML=err?esc(html):html;if(err)$('#to2').disabled=true}
 function applySet(s){if(!s.questions.length){status('No usable questions were found in this list.',true);G.set=null;renderLists();return}
   G.set=s;renderLists();
@@ -427,7 +464,7 @@ function applySet(s){if(!s.questions.length){status('No usable questions were fo
   status(h);$('#to2').disabled=false}
 async function loadServerLists(){try{const r=await fetch('sets/sets.json',{cache:'no-store'});if(!r.ok)return;const arr=await r.json();
   arr.forEach(e=>{const folder=String(e.folder||'').replace(/\/+$/,'');const file=e.file||'questions.xlsx';const base='sets/'+folder+'/';
-    addList({id:'srv:'+folder+'/'+file,name:e.name||folder,where:'sets/'+folder,load:async()=>{
+    addList({id:'srv:'+folder+'/'+file,name:e.name||folder,where:'',...meta(folder,e),load:async()=>{
       const res=await fetch(base+file,{cache:'no-store'});if(!res.ok)throw new Error('Could not open '+base+file);
       const n=normalize(rowsFromBuffer(file,await res.arrayBuffer()));return{name:e.name||folder,base,...n}}})})}catch(e){}}
 function onFolder(files){const arr=[...files];if(!arr.length)return;const dirs={};
@@ -436,12 +473,13 @@ function onFolder(files){const arr=[...files];if(!arr.length)return;const dirs={
   Object.entries(dirs).forEach(([d,fs])=>{fs.filter(f=>SHEET.test(f.name)&&!f.name.startsWith('~$')).forEach(sheet=>{found++;
     const id='dir:'+d+'/'+sheet.name+':'+sheet.size;if(!firstId)firstId=id;
     const label=(d?d.split('/').pop()+' / ':'')+sheet.name;
-    addList({id,name:label.replace(SHEET,''),where:'from your folder',load:async()=>{
+    addList({id,name:label.replace(SHEET,''),where:'from your folder',...meta(d),load:async()=>{
       const map={};fs.forEach(f=>{if(f!==sheet)map[f.name.toLowerCase()]=URL.createObjectURL(f)});
       const n=normalize(rowsFromBuffer(sheet.name,await sheet.arrayBuffer()));return{name:label.replace(SHEET,''),mediaMap:map,...n}}})})});
   if(!found){status('No question list (.xlsx or .csv) was found in that folder.',true);return}
-  if(found===1)chooseList(G.lists.find(l=>l.id===firstId));else status(`${found} question lists found. Choose one above.`)}
-function onFile(f){if(!f)return;addList({id:'file:'+f.name+':'+f.size,name:f.name.replace(SHEET,''),where:'single file (no pictures)',
+  const first=G.lists.find(l=>l.id===firstId);G.grade=GRADES.includes(first.grade)?first.grade:'other';renderLists();
+  if(found===1)chooseList(first);else status(`${found} question lists found. Choose a grade and a set above.`)}
+function onFile(f){if(!f)return;const md=meta(f.name);G.grade=GRADES.includes(md.grade)?md.grade:'other';addList({id:'file:'+f.name+':'+f.size,name:f.name.replace(SHEET,''),where:'single file (no pictures)',...md,
   load:async()=>{const n=normalize(rowsFromBuffer(f.name,await f.arrayBuffer()));return{name:f.name.replace(SHEET,''),mediaMap:{},...n}}});
   chooseList(G.lists[G.lists.length-1])}
 
