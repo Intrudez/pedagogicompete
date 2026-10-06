@@ -1,5 +1,7 @@
 # Board Quiz: team quiz game for the smart board
 
+Türkçe kullanım kılavuzu: [KULLANIM_KILAVUZU.md](KULLANIM_KILAVUZU.md)
+
 ## What is in this folder
 
 ```
