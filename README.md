@@ -108,3 +108,7 @@ Any file you don't add uses the built-in sound.
 For the perfect-team celebration, put `celebration.mp4` (or `.webm` or `.gif`) in `assets/`. A list folder can have its own `celebration.mp4`, which wins over the one in `assets/`. Without a file, the game shows "PERFECT!" with confetti.
 
 If a picture shows "File not found", check that the file name in Excel matches the file exactly, including .jpg or .png.
+
+## License
+
+Board Quiz by @bks0026 is licensed under CC BY-NC-SA 4.0: you may use, copy, adapt and share it for non-commercial teaching. Credit @bks0026 and share adapted versions under the same license. See `LICENSE` and `THIRD_PARTY_NOTICES.md`.
