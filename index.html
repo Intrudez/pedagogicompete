@@ -19,6 +19,9 @@
 }
 *{box-sizing:border-box}
 [hidden]{display:none!important}
+.sig{position:fixed;right:clamp(10px,1.2vw,20px);bottom:calc(env(safe-area-inset-bottom,0px) + 8px);z-index:5;font-family:var(--body);font-weight:700;font-size:clamp(13px,.85vw,16px);color:var(--muted);text-decoration:none;padding:4px 10px;border:1px solid var(--edge2);border-radius:999px;background:rgba(7,10,36,.7)}
+.sig:hover,.sig:focus-visible{color:var(--gold);border-color:var(--gold)}
+
 html,body{height:100%;margin:0}
 body{background:radial-gradient(ellipse at 50% 18%,var(--stage2) 0%,var(--stage) 62%) fixed,var(--stage);color:var(--ink);font-family:var(--body);font-size:clamp(16px,1.25vw,22px);padding:12px clamp(16px,2vw,32px);overflow-x:hidden}
 button,input,select{font:inherit;color:inherit}
@@ -301,6 +304,7 @@ h1,h2{font-family:var(--display);font-weight:800;margin:0;letter-spacing:.01em;t
   </section>
 </div>
 
+<a class="sig" href="https://github.com/bks0026/pedagogicompete" target="_blank" rel="noopener">@bks0026</a>
 <div class="banner" id="banner"></div>
 <div class="celebrate" id="celebrate" hidden></div>
 <canvas id="confetti" hidden></canvas>
